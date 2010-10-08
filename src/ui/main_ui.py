@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/main.ui'
+# Form implementation generated from reading ui file '/home/rodrigo/workspace/PyStockFlow/src/ui/main.ui'
 #
-# Created: Thu Sep 30 00:51:30 2010
+# Created: Wed Oct  6 00:05:31 2010
 #      by: PyQt4 UI code generator 4.7.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -43,7 +43,7 @@ class Ui_main(object):
         self.label_2.setObjectName("label_2")
         self.gridLayout.addWidget(self.label_2, 0, 1, 1, 1)
         self.stock = QtGui.QLineEdit(self.frame)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.stock.sizePolicy().hasHeightForWidth())
@@ -56,7 +56,7 @@ class Ui_main(object):
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 0, 2, 1, 1)
         self.date = QtGui.QDateEdit(self.frame)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.date.sizePolicy().hasHeightForWidth())
@@ -77,7 +77,7 @@ class Ui_main(object):
         self.gridLayout.addWidget(self.operation, 1, 1, 1, 1)
         self.quantity = QtGui.QLineEdit(self.frame)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(2)
+        sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.quantity.sizePolicy().hasHeightForWidth())
         self.quantity.setSizePolicy(sizePolicy)
@@ -89,8 +89,8 @@ class Ui_main(object):
         self.label_4.setObjectName("label_4")
         self.gridLayout.addWidget(self.label_4, 0, 3, 1, 1)
         self.price = QtGui.QLineEdit(self.frame)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(2)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.price.sizePolicy().hasHeightForWidth())
         self.price.setSizePolicy(sizePolicy)
@@ -117,17 +117,13 @@ class Ui_main(object):
         self.label_6.setObjectName("label_6")
         self.gridLayout.addWidget(self.label_6, 0, 5, 1, 1)
         self.add = QtGui.QPushButton(self.frame)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.add.sizePolicy().hasHeightForWidth())
-        self.add.setSizePolicy(sizePolicy)
         self.add.setText("")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("ui/plus.svg"), QtGui.QIcon.Normal, QtGui.QIcon.On)
         self.add.setIcon(icon)
         self.add.setAutoDefault(True)
         self.add.setDefault(True)
+        self.add.setFlat(False)
         self.add.setObjectName("add")
         self.gridLayout.addWidget(self.add, 1, 6, 1, 1)
         self.gridLayout_2.addWidget(self.frame, 0, 0, 1, 4)
@@ -157,7 +153,11 @@ class Ui_main(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.trade_list.sizePolicy().hasHeightForWidth())
         self.trade_list.setSizePolicy(sizePolicy)
+        self.trade_list.setAlternatingRowColors(True)
+        self.trade_list.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.trade_list.setCornerButtonEnabled(False)
         self.trade_list.setObjectName("trade_list")
+        self.trade_list.horizontalHeader().setStretchLastSection(False)
         self.gridLayout_2.addWidget(self.trade_list, 3, 0, 1, 4)
         self.tabWidget.addTab(self.operations, "")
         self.portfolio = QtGui.QWidget()
@@ -177,10 +177,26 @@ class Ui_main(object):
         self.statusbar = QtGui.QStatusBar(main)
         self.statusbar.setObjectName("statusbar")
         main.setStatusBar(self.statusbar)
+        self.label.setBuddy(self.date)
+        self.label_2.setBuddy(self.operation)
+        self.label_3.setBuddy(self.stock)
+        self.label_4.setBuddy(self.quantity)
+        self.label_5.setBuddy(self.price)
+        self.label_6.setBuddy(self.broker)
 
         self.retranslateUi(main)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(main)
+        main.setTabOrder(self.tabWidget, self.date)
+        main.setTabOrder(self.date, self.operation)
+        main.setTabOrder(self.operation, self.stock)
+        main.setTabOrder(self.stock, self.quantity)
+        main.setTabOrder(self.quantity, self.price)
+        main.setTabOrder(self.price, self.broker)
+        main.setTabOrder(self.broker, self.add)
+        main.setTabOrder(self.add, self.month)
+        main.setTabOrder(self.month, self.trade_list)
+        main.setTabOrder(self.trade_list, self.tableView)
 
     def retranslateUi(self, main):
         main.setWindowTitle(QtGui.QApplication.translate("main", "StockFlow", None, QtGui.QApplication.UnicodeUTF8))
