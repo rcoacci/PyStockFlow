@@ -11,9 +11,10 @@ from ui.models import OperationListModel
 
 class DateDelegate(QStyledItemDelegate):
 
-    def __init__(self, parent=None, pattern="%d/%m/%Y"):
-        QStyledItemDelegate.__init__(self, parent)
+    def __init__(self, parent=None, pattern="%d/%m/%Y", edit_pattern="dd/MM/yyyy"):
+        super(DateDelegate, self).__init__(parent)
         self.pattern = pattern
+        self.edit_pattern = edit_pattern
 
     def displayText(self, value, locale):
         """displayText ( const QVariant & value, const QLocale & locale ) """
@@ -21,21 +22,26 @@ class DateDelegate(QStyledItemDelegate):
         return QStyledItemDelegate.displayText(self, value, locale)
 
 
-
     def createEditor(self, parent, option, index):
         """QWidget * QStyledItemDelegate::createEditor ( QWidget * parent, const QStyleOptionViewItem & option, const QModelIndex & index )"""
         editor = QDateTimeEdit(parent)
         editor.setCalendarPopup(True)
-        editor.editingFinished().connect(self.comitAndClose())
+        editor.setDisplayFormat(self.edit_pattern)
+        editor.dateTimeChanged.connect(self._commitAndClose)
         return editor
 
-    def commitAndClose(self):
-        self.commitData.emmit(self.sender())
-        self.closeEditor.emmit(self.sender())
+    def _commitAndClose(self):
+        self.commitData.emit(self.sender())
+        self.closeEditor.emit(self.sender(), self.NoHint)
 
     def setEditorData(self, editor, index):
         """void QStyledItemDelegate::setEditorData(QWidget *editor,const QModelIndex &index)"""
         editor.setDateTime(index.data())
+
+    def setModelData(self, editor, model, index):
+        """setModelData ( QWidget * editor, QAbstractItemModel * model, const QModelIndex & index ) """
+        model.setData(index, editor.dateTime().toPyDateTime())
+
 
 class OperationDelegate(QStyledItemDelegate):
 

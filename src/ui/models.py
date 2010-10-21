@@ -20,11 +20,12 @@ sip.setapi('QString', 2)
 
 class EntityTableModel(QtCore.QAbstractTableModel):
 
-    def __init__(self, fields, flags=Qt.ItemIsEditable, initial_load=True):
+    def __init__(self, fields, flags=Qt.ItemIsEditable, save_onchange=True):
         super(EntityTableModel, self).__init__()
         self.rows = []
         self.columns = fields
         self._flags = flags
+        self._seave_onchange = save_onchange
 
 
     def rowCount(self, parent=QtCore.QModelIndex()):
@@ -66,6 +67,8 @@ class EntityTableModel(QtCore.QAbstractTableModel):
             try:
                 entity = self.rows[index.row()]
                 setattr(entity, self.columns[index.column()], value)
+                if self._save_onchange:
+                    session.commit()
                 self.dataChanged().emit(index, index)
                 return True
             except:
